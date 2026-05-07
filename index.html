@@ -13,8 +13,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* لون وردي فاتح جداً وناعم */
-            background-color: #ffeef2;
+            background-color: #ffeef2; /* وردي فاتح */
             font-family: 'Tajawal', sans-serif;
             overflow: hidden;
             color: #d81b60;
@@ -22,7 +21,7 @@
 
         .container {
             text-align: center;
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             padding: 30px;
             border-radius: 40px;
             width: 85%;
@@ -31,25 +30,32 @@
             border: 2px solid #ffc1cc;
         }
 
+        /* حاوية الصورة مع الكلاسات التي طلبتها */
         .image-box {
-            background: #fff0f5;
-            padding: 15px;
+            width: 180px;
+            height: 180px;
             border-radius: 30px;
-            margin-bottom: 20px;
-            display: inline-block;
+            margin: 0 auto 20px auto;
+            background-size: cover;
+            background-position: center;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: background-image 0.5s ease-in-out;
         }
 
-        img {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
-        }
+        /* كلاسات الصور الستة التي طلبتها */
+        /* ملاحظة: تأكد من وجود الصور بنفس هذه الأسماء في GitHub */
+        .cit1 { background-image: url('cit1.jpg'); }
+        .cit2 { background-image: url('cit2.jpg'); }
+        .cit3 { background-image: url('cit3.jpg'); }
+        .cit4 { background-image: url('cit4.jpg'); }
+        .cit5 { background-image: url('cit5.jpg'); }
+        .cit6 { background-image: url('cit6.jpg'); }
 
-        /* تنسيق نص الكتابة */
         #display-text {
             font-size: 1.3rem;
             font-weight: 700;
-            min-height: 3rem;
+            min-height: 3.5rem;
             margin-bottom: 25px;
             color: #d81b60;
         }
@@ -65,27 +71,20 @@
             cursor: pointer;
             transition: 0.3s;
             box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
-            display: inline-block;
         }
 
-        .btn:hover {
-            transform: scale(1.1);
-            background: #ff1493;
-        }
+        .btn:hover { transform: scale(1.1); background: #ff1493; }
 
         .heart-btn {
             font-size: 80px;
             cursor: pointer;
             background: none;
             border: none;
-            display: block;
-            margin: 0 auto;
             animation: beat 0.8s infinite alternate;
         }
 
         @keyframes beat { to { transform: scale(1.2); } }
 
-        /* شاشة الموسيقى النهائية */
         .final-screen {
             background: #000;
             color: white;
@@ -105,10 +104,10 @@
 <body>
 
 <div class="container" id="main-container">
-    <div class="image-box">
-        <img id="display-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eXUxeGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclSPr2/giphy.gif">
-    </div>
+    <div id="image-frame" class="image-box cit1"></div>
+    
     <div id="display-text"></div>
+    
     <div id="btn-container">
         <button class="btn" id="action-btn" onclick="nextStep()">أبدأ ❤️</button>
     </div>
@@ -116,7 +115,7 @@
 
 <div id="final-screen" class="final-screen hidden">
     <div style="width: 85%;">
-        <img src="https://i.pinimg.com/736x/8c/8b/6d/8c8b6d9d9f5a0e1c6e1a1a1a1a1a1a1a.jpg" style="width: 180px; border-radius: 20px; border: 3px solid #ff69b4;">
+        <div class="image-box cit6" style="border: 3px solid #ff69b4;"></div>
         <h2 style="color: #ff69b4; margin-top: 20px;">أغنيتنا المفضلة 🎵</h2>
         <p style="font-size: 1.4rem;">اعشقج واحبج يا روان قلبي ❤️</p>
         <p style="color: #ffb6c1;">- من أحمد -</p>
@@ -129,16 +128,17 @@
 <script>
     let currentStep = 0;
     const textElement = document.getElementById('display-text');
-    const imgElement = document.getElementById('display-img');
+    const imageFrame = document.getElementById('image-frame');
     const btn = document.getElementById('action-btn');
 
+    // البيانات: النص، والكلاس الخاص بالخلفية، واسم الزر
     const content = [
-        { text: "هلو روان", img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eXUxeGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclSPr2/giphy.gif", btn: "هلوو" },
-        { text: "روان عندي سؤال الجججج", img: "https://media.giphy.com/media/Vp267zS3XG0E0/giphy.gif", btn: "شنو هو؟" },
-        { text: "بس مستحية اسألك اياه 😂", img: "https://media.giphy.com/media/3o7TKuyfNhdVpZ8yNi/giphy.gif", btn: "اسألي" },
-        { text: "تحبين احمد لو لااا؟", img: "https://media.giphy.com/media/c76IJLufpN95e/giphy.gif", btn: "ها؟ 🤭" },
-        { text: "شنو هااا 😒 تحبين احمد لو لااا؟", img: "https://media.giphy.com/media/10tIjpzIu8feY8/giphy.gif", btn: "مدري" },
-        { text: "اذا تحبين احمد دوسي على القلب 🤭", img: "https://media.giphy.com/media/9d66YmZ4U7KSc/giphy.gif", btn: "❤️" }
+        { text: "هلو روان", class: "cit1", btn: "هلوو" },
+        { text: "روان عندي سؤال الجججج", class: "cit2", btn: "شنو هو؟" },
+        { text: "بس مستحية اسألك اياه 😂", class: "cit3", btn: "اسألي" },
+        { text: "تحبين احمد لو لااا؟", class: "cit4", btn: "ها؟ 🤭" },
+        { text: "شنو هااا 😒 تحبين احمد لو لااا؟", class: "cit5", btn: "مدري" },
+        { text: "اذا تحبين احمد دوسي على القلب 🤭", class: "cit6", btn: "❤️" }
     ];
 
     function typeWriter(text, i, fnCallback) {
@@ -162,8 +162,11 @@
 
         const data = content[currentStep];
         btn.classList.add('invisible');
-        imgElement.src = data.img;
-        textElement.innerHTML = ""; // مسح النص قبل البدء
+        
+        // تغيير كلاس الصورة ليتم جلب الخلفية من CSS
+        imageFrame.className = "image-box " + data.class;
+        
+        textElement.innerHTML = ""; 
         
         typeWriter(data.text, 0, function() {
             btn.classList.remove('invisible');
