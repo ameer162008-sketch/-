@@ -8,8 +8,6 @@
     <style>
         :root {
             --primary-color: #d81b60;
-            --bg-color: #ffeef2;
-            --soft-pink: #ffc1cc;
             --transition-speed: 0.4s;
         }
 
@@ -20,26 +18,38 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: var(--bg-color);
+            /* إعداد صورة الخلفية cit7 */
+            background-image: url('cit7.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             font-family: 'Tajawal', sans-serif;
             overflow: hidden;
             color: var(--primary-color);
         }
 
+        /* طبقة حماية لضمان وضوح المحتوى فوق صورة الخلفية */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 238, 242, 0.6); /* طبقة وردية شفافة */
+            z-index: -1;
+        }
+
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px); /* تأثير ضبابي خلف الحاوية */
             padding: 40px 20px;
             border-radius: 40px;
             width: 85%;
             max-width: 360px;
-            box-shadow: 0 20px 50px rgba(255, 182, 193, 0.5);
-            border: 2px solid var(--soft-pink);
-            transform: translateY(0);
-            transition: transform var(--transition-speed) ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            border: 2px solid #ffc1cc;
+            z-index: 1;
         }
 
-        /* حاوية الصورة مع دعم FPS عالي للانتقالات */
         .image-box {
             width: 180px;
             height: 180px;
@@ -50,10 +60,10 @@
             border: 6px solid white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.08);
             transition: background-image 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: background-image; /* لتحفيز كرت الشاشة */
+            will-change: background-image;
         }
 
-        /* كلاسات الصور المستدعاة من GitHub */
+        /* كلاسات الصور الستة المخصصة للمحتوى */
         .cit1 { background-image: url('cit1.jpg'); }
         .cit2 { background-image: url('cit2.jpg'); }
         .cit3 { background-image: url('cit3.jpg'); }
@@ -64,7 +74,7 @@
         #display-text {
             font-size: 1.4rem;
             font-weight: 700;
-            height: 3.5rem; /* حجز مساحة ثابتة لمنع القفز */
+            height: 3.5rem;
             margin-bottom: 25px;
             line-height: 1.4;
         }
@@ -79,8 +89,6 @@
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 1;
-            transform: scale(1);
         }
 
         .btn:hover {
@@ -88,8 +96,6 @@
             background: #ff1493;
             box-shadow: 0 8px 20px rgba(255, 20, 147, 0.4);
         }
-
-        .btn:active { transform: scale(0.95); }
 
         .btn.hidden-btn {
             opacity: 0;
@@ -125,7 +131,6 @@
         }
 
         @keyframes fadeIn { to { opacity: 1; } }
-
         .hidden { display: none; }
     </style>
 </head>
@@ -145,7 +150,7 @@
         <h2 style="color: #ff69b4; font-size: 1.8rem;">أغنيتنا المفضلة 🎵</h2>
         <p style="font-size: 1.3rem; margin: 15px 0;">اعشقج واحبج يا روان قلبي ❤️</p>
         <p style="color: #ffb6c1; font-size: 0.9rem;">- من أحمد -</p>
-        <audio id="player" controls style="margin-top: 25px; width: 100%; border-radius: 10px;">
+        <audio id="player" controls style="margin-top: 25px; width: 100%;">
             <source src="https://www.mboxdrive.com/ya-helm-wardi.mp3" type="audio/mpeg">
         </audio>
     </div>
@@ -166,19 +171,15 @@
         { text: "اذا تحبين احمد دوسي على القلب 🤭", class: "cit6", btn: "❤️" }
     ];
 
-    // دالة الكتابة باستخدام منطق أكثر سلاسة ونظافة
     function typeEffect(text, callback) {
         let i = 0;
         textElement.innerHTML = "";
-        
         function type() {
             if (i < text.length) {
                 textElement.innerHTML += text.charAt(i);
                 i++;
-                setTimeout(type, 60); // سرعة كتابة متوازنة ومنظمة
-            } else {
-                if (callback) callback();
-            }
+                setTimeout(type, 65);
+            } else if (callback) callback();
         }
         type();
     }
@@ -195,20 +196,13 @@
         }
 
         const data = content[currentStep];
-        
-        // تأثيرات بصرية منظمة عند الانتقال
         btn.classList.add('hidden-btn');
-        imageFrame.style.opacity = "0.7";
         
         setTimeout(() => {
             imageFrame.className = "image-box " + data.class;
-            imageFrame.style.opacity = "1";
-            
             typeEffect(data.text, () => {
                 btn.classList.remove('hidden-btn');
                 btn.innerText = data.btn;
-                
-                // تحويل الزر لقلب في الخطوة الأخيرة بشكل سلس
                 if(data.btn === "❤️") {
                     btn.className = "heart-btn";
                     btn.innerHTML = "❤️";
@@ -219,7 +213,6 @@
         currentStep++;
     }
 
-    // بدء التجربة عند تحميل الصفحة تماماً لضمان الـ FPS
     window.addEventListener('load', () => {
         setTimeout(nextStep, 500);
     });
