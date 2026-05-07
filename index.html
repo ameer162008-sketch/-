@@ -13,76 +13,95 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ffeef2;
+            /* نفس ألوان الفيديو وردي غامق */
+            background: radial-gradient(circle, #ff4081 0%, #880e4f 100%);
             font-family: 'Tajawal', sans-serif;
             overflow: hidden;
+            color: white;
         }
 
         .container {
             text-align: center;
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
-            width: 90%;
-            max-width: 400px;
-            transition: all 0.5s ease;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 85%;
+            max-width: 380px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-box {
+            background: white;
+            padding: 15px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         img {
-            width: 200px;
-            height: auto;
-            margin-bottom: 20px;
-            border-radius: 15px;
+            width: 170px;
+            height: 170px;
+            object-fit: contain;
         }
 
         h2 {
-            color: #d81b60;
+            font-size: 1.4rem;
             margin-bottom: 25px;
-            font-size: 1.5rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
         }
 
         .btn {
-            background-color: #ff69b4;
-            color: white;
+            background: #ffffff;
+            color: #d81b60;
             border: none;
-            padding: 12px 30px;
+            padding: 12px 35px;
             font-size: 1.1rem;
-            border-radius: 50px;
+            font-weight: bold;
+            border-radius: 20px;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .btn:hover {
-            background-color: #ff1493;
-            transform: scale(1.05);
+            transform: scale(1.1);
+            background: #fce4ec;
         }
 
         .heart-btn {
+            font-size: 90px;
+            cursor: pointer;
             background: none;
             border: none;
-            font-size: 80px;
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
+            display: block;
+            margin: 0 auto;
+            animation: beat 0.7s infinite alternate;
+            filter: drop-shadow(0 0 15px #ff1744);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        @keyframes beat {
+            to { transform: scale(1.25); }
         }
 
-        .music-player {
-            background: #fff0f5;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px dashed #ff69b4;
+        /* الشاشة النهائية السوداء */
+        .final-screen {
+            background: black;
+            color: white;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
         }
 
-        audio {
-            width: 100%;
-            margin-top: 15px;
+        .music-card {
+            width: 80%;
         }
 
         .hidden { display: none; }
@@ -90,93 +109,78 @@
 </head>
 <body>
 
-<div class="container" id="app">
-    <div id="step0">
-        <h2>أهلاً بكِ.. هل أنتِ روان؟</h2>
-        <button class="btn" onclick="nextStep(1)">أني روان ❤️</button>
+<div class="container" id="main-container">
+    <div class="image-box">
+        <img id="display-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eXUxeGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclSPr2/giphy.gif" alt="Hello Kitty">
     </div>
-
-    <div id="content" class="hidden">
-        <img id="mainImg" src="" alt="Hello Kitty">
-        <h2 id="mainText"></h2>
-        <div id="buttonArea"></div>
+    <h2 id="display-text">هلو روان</h2>
+    <div id="btn-container">
+        <button class="btn" onclick="handleStep()">هلوو</button>
     </div>
+</div>
 
-    <div id="musicStep" class="hidden">
-        <div class="music-player">
-            <img src="https://i.pinimg.com/originals/8c/8b/6d/8c8b6d9d9f5a0e1c6e1a1a1a1a1a1a1a.jpg" alt="Hello Kitty Music">
-            <h3>أغنيتنا المفضلة 🎵</h3>
-            <p>يا حلم وردي.. غيرج شعندي</p>
-            <audio id="bgMusic" controls>
-                <source src="https://www.mboxdrive.com/ya-helm-wardi.mp3" type="audio/mpeg">
-                متصفحك لا يدعم تشغيل الصوت.
-            </audio>
-        </div>
+<div id="final-screen" class="final-screen hidden">
+    <div class="music-card">
+        <img src="https://i.pinimg.com/736x/8c/8b/6d/8c8b6d9d9f5a0e1c6e1a1a1a1a1a1a1a.jpg" style="width: 200px; border-radius: 20px;">
+        <h3 style="color: #ff69b4; margin-top: 20px;">أغنيتنا المفضلة 🎵</h3>
+        <p style="font-size: 1.2rem;">اعشقج واحبج يا روان قلبي ❤️</p>
+        <p style="color: #888;">- من أحمد -</p>
+        <audio id="player" controls style="margin-top: 20px; width: 100%;">
+            <source src="https://www.mboxdrive.com/ya-helm-wardi.mp3" type="audio/mpeg">
+        </audio>
     </div>
 </div>
 
 <script>
-    let currentStep = 1;
-    
-    // روابط الصور (يمكنك تبديلها بروابط صورك الخاصة)
-    const images = [
-        "https://i.pinimg.com/originals/60/7b/2b/607b2b934789886a9f4c3a2f8b5a0e1c.gif", // هيلو كيتي هلو
-        "https://i.pinimg.com/originals/82/01/a4/8201a43a0e6e768b5a0e1c6e1a1a1a1a.png", // روان عندي سؤال
-        "https://i.pinimg.com/originals/9e/4a/0a/9e4a0a3a0e6e768b5a0e1c6e1a1a1a1a.png", // مستحية
-        "https://i.pinimg.com/originals/4d/6c/1a/4d6c1a3a0e6e768b5a0e1c6e1a1a1a1a.png", // تحبين احمد؟
-        "https://i.pinimg.com/originals/2b/8b/8b/2b8b8b3a0e6e768b5a0e1c6e1a1a1a1a.png", // شنو ها؟
-        "https://i.pinimg.com/originals/e1/9b/7a/e19b7a3a0e6e768b5a0e1c6e1a1a1a1a.png"  // دوسي عالقلب
+    let step = 1;
+    const imgElement = document.getElementById('display-img');
+    const textElement = document.getElementById('display-text');
+    const btnContainer = document.getElementById('btn-container');
+
+    // صور تعبيرية لهيلو كيتي تناسب الحوار
+    const kittyImages = [
+        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eXUxeGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclSPr2/giphy.gif",
+        "https://media.giphy.com/media/Vp267zS3XG0E0/giphy.gif",
+        "https://media.giphy.com/media/3o7TKuyfNhdVpZ8yNi/giphy.gif",
+        "https://media.giphy.com/media/c76IJLufpN95e/giphy.gif",
+        "https://media.giphy.com/media/10tIjpzIu8feY8/giphy.gif",
+        "https://media.giphy.com/media/9d66YmZ4U7KSc/giphy.gif"
     ];
 
-    function nextStep(step) {
-        const step0 = document.getElementById('step0');
-        const content = document.getElementById('content');
-        const mainImg = document.getElementById('mainImg');
-        const mainText = document.getElementById('mainText');
-        const buttonArea = document.getElementById('buttonArea');
-        const musicStep = document.getElementById('musicStep');
-
-        step0.classList.add('hidden');
-        content.classList.remove('hidden');
-
-        if (step === 1) {
-            mainImg.src = images[0];
-            mainText.innerText = "هلوو روان";
-            buttonArea.innerHTML = `<button class="btn" onclick="nextStep(2)">هلو</button>`;
+    function handleStep() {
+        step++;
+        
+        if (step === 2) {
+            imgElement.src = kittyImages[1];
+            textElement.innerText = "روان عندي سؤال الجججج";
+            btnContainer.innerHTML = `<button class="btn" onclick="handleStep()">شنو هو؟</button>`;
         } 
-        else if (step === 2) {
-            mainImg.src = images[1];
-            mainText.innerText = "روان عندي سؤال الججج";
-            buttonArea.innerHTML = `<button class="btn" onclick="nextStep(3)">شنو هو؟</button>`;
-        }
         else if (step === 3) {
-            mainImg.src = images[2];
-            mainText.innerText = "بس مستحية اسألك اياه 😓";
-            buttonArea.innerHTML = `<button class="btn" onclick="nextStep(4)">اسألنيييييييي</button>`;
+            imgElement.src = kittyImages[2];
+            textElement.innerText = "بس مستحية اسألك اياه 😂";
+            btnContainer.innerHTML = `<button class="btn" onclick="handleStep()">اسأليي</button>`;
         }
         else if (step === 4) {
-            mainImg.src = images[3];
-            mainText.innerText = "تحبين احمد لو لاا؟";
-            buttonArea.innerHTML = `<button class="btn" onclick="nextStep(5)">ها؟ 🤭</button>`;
+            imgElement.src = kittyImages[3];
+            textElement.innerText = "تحبين احمد لو لااا؟";
+            btnContainer.innerHTML = `<button class="btn" onclick="handleStep()">ها؟ 🤭</button>`;
         }
         else if (step === 5) {
-            mainImg.src = images[4];
-            mainText.innerText = "شنو هاا 😠 تحبين احمدد لوو لاا؟";
-            buttonArea.innerHTML = `<button class="btn" onclick="nextStep(6)">مدري</button>`;
+            imgElement.src = kittyImages[4];
+            textElement.innerText = "شنو هااا 😒 تحبين احمد لو لااا؟";
+            btnContainer.innerHTML = `<button class="btn" onclick="handleStep()">مدري</button>`;
         }
         else if (step === 6) {
-            mainImg.src = images[5];
-            mainText.innerText = "اذا تحبين احمدد دوسيي على القلب";
-            buttonArea.innerHTML = `<button class="heart-btn" onclick="nextStep(7)">🩷</button>`;
+            imgElement.src = kittyImages[5];
+            textElement.innerText = "اذا تحبين احمد دوسي على القلب 🤭";
+            btnContainer.innerHTML = `<button class="heart-btn" onclick="handleStep()">❤️</button>`;
         }
         else if (step === 7) {
-            mainText.innerText = "احبج ياروانيي ويا قلبيي وروحيي ❤️";
-            buttonArea.innerHTML = `<button class="btn" onclick="nextStep(8)">اني هم احبكك 😊</button>`;
-        }
-        else if (step === 8) {
-            content.classList.add('hidden');
-            musicStep.classList.remove('hidden');
-            document.getElementById('bgMusic').play();
+            document.getElementById('main-container').classList.add('hidden');
+            document.getElementById('final-screen').classList.remove('hidden');
+            document.body.style.background = "black";
+            const audio = document.getElementById('player');
+            audio.play().catch(e => console.log("التشغيل التلقائي يحتاج تفاعل"));
         }
     }
 </script>
